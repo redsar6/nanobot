@@ -48,19 +48,3 @@ EXPOSE 18790
 
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["status"]
-#!/bin/bash
-set -e
-
-mkdir -p /tmp/.nanobot
-
-if [ -n "$NANOBOT_CONFIG" ]; then
-    printf '%s' "$NANOBOT_CONFIG" > /tmp/.nanobot/config.json
-fi
-
-export GOOGLE_APPLICATION_CREDENTIALS=/tmp/gsheets-key.json
-export HOME=/tmp
-export NANOBOT_HOME=/tmp/.nanobot
-
-pip install google-auth google-api-python-client -q --break-system-packages 2>/dev/null || true
-
-exec entrypoint.sh "$@"
